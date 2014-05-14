@@ -35,7 +35,7 @@ function make_slug($value, $opts = null) {
     return $value;
 }
 
-function pr($val, $var_name = NULL) {
+function pa($val, $var_name = NULL) {
     if (!empty($val)) {
         echo "<pre>";
         if (isset($var_name)) {
