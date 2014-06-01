@@ -1,5 +1,13 @@
-<?php 
+<?php
+/**
+ * 
+ */
 
+/**
+ * Function to make output on console like console.log() does in javascript.<br>
+ * @param mixed $data Data to debug
+ * @return console~output open console (Ctrl+Shift+J) and see formatted output
+ */
 function debug($data) {
     echo "<script>\r\n//<![CDATA[\r\nif(!console){var console={log:function(){}}}";
     $output = explode("\n", print_r($data, true));
@@ -12,7 +20,14 @@ function debug($data) {
     echo "\r\n//]]>\r\n</script>";
 }
 
-function make_slug($value, $opts = null) {
+/**
+ * <p><b><i>make a url friendly string</i></b></p>
+ * <p>A <b>Slug</b> is Url Friendly string which does not include any white spaces</p>
+ * @param string $value string whose slug is required
+ * @param numeric $length [optional]<br>The Length upto which slug is required e.g. <i>100</i>
+ * @return string String which is url friendly & is having every white space(s) replaced by "-"
+ */
+function make_slug($value, $length = null) {
     $value = preg_replace("/@/", ' at ', $value);
     $value = preg_replace("/£/", ' pound ', $value);
     $value = preg_replace("/#/", ' hash ', $value);
@@ -29,23 +44,36 @@ function make_slug($value, $opts = null) {
     if (substr($value, 0, 1) == "-") {
         $value = substr($value, 1);
     }
-    if (isset($opts['LIMIT']) && is_numeric($opts['LIMIT']) && $opts['LIMIT'] > 0) {
-        $value = substr($value, 0, $opts['LIMIT']);
+    if (isset($length) && is_numeric($length) && $length > 0) {
+        $value = substr($value, 0, $length);
     }
     return $value;
 }
 
-function pa($val, $var_name = NULL) {
-    if (!empty($val)) {
+/**
+ * modified version of print_r()<br /><br />
+ * makes a formatted output of an array
+ * @param array $array array to be printed
+ * @param string $var_name [optional]<br />Shows a description about the output
+ */
+function pa($array, $var_name = NULL) {
+    if (!empty($array)) {
         echo "<pre>";
         if (isset($var_name)) {
             echo "<div style='border:solid 2px red;color:lightgreen;background-color:black;font-size:18px;padding:5px;border-radius:5px'>Data for '<font color=red>" . $var_name . "</font>' as [key] => value</div><br>";
         }
-        print_r($val);
+        print_r($array);
         echo "</pre>";
     }
 }
 
+/**
+ * prints json string from array
+ * @param array $Array input array
+ * @param boolean $pp [optional]<br />
+ * <i>true</i> - pretty printed output.<br />
+ * <i>false</i> (default) - simple json output
+ */
 function pj($Array, $pp = FALSE) {
     header('Content-type: text/plain');
     if ($pp === TRUE)
@@ -54,6 +82,17 @@ function pj($Array, $pp = FALSE) {
         echo json_encode($Array);
 }
 
+/**
+ * make all keys as uppercase or lowercase
+ * @param array $Array input array
+ * @param boolean $make_lower <b>[optional]</b><br>
+ * TRUE - make keys lowercase<br>
+ * FALSE (default) - make keys uppercase
+ * @param boolean $include_children <b>[optional]</b><br>
+ * TRUE - also apply same function to including children arrays<br>
+ * FALSE (optional) - apply only to input array
+ * @return array Array with function applied over it
+ */
 function caps_keys($Array, $make_lower = FALSE, $include_children = FALSE) {
     if (is_array($Array)) {
         $cap_keys = array();
@@ -252,4 +291,3 @@ function tree($data) {
     // print the javascript function toggleDisplay() and then the transformed output
     echo '<script language="Javascript">function toggleDisplay(id) { document.getElementById(id).style.display = (document.getElementById(id).style.display == "block") ? "none" : "block"; }</script>' . "\n$out";
 }
-
