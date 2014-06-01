@@ -1,7 +1,4 @@
 <?php
-/**
- * 
- */
 
 /**
  * Function to make output on console like console.log() does in javascript.<br>
